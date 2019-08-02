@@ -1,0 +1,43 @@
+version: "3.7"
+
+services:
+
+        djangoapp:
+                build: ./djangoapp
+                container_name: djangoapp
+                restart: always
+                expose:
+                        - 8000
+                depends_on:
+                        - db
+                        - redis
+        djangosocket:
+                build: ./djangoapp
+                container_name: djangosocket
+                restart: always
+                expose:
+                        - 8010
+                command: python djangoproject/manage.py runserver 0.0.0.0:8010
+                depends_on:
+                        - db
+                        - redis
+
+        nginx:
+                build: ./nginx
+                container_name: nginx
+                restart: always
+                ports:
+                        - "80:80"
+                depends_on:
+                        - djangoapp
+                        - djangosocket
+        db:
+                build: ./postgresql
+                container_name: postgres
+                restart: always
+
+        redis:
+                image: redis
+                container_name: redis
+                restart: always
+
