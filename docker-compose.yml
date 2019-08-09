@@ -3,7 +3,8 @@ version: "3.7"
 services:
 
         djangoapp:
-                build: ./djangoapp
+                # build: ./djangoapp
+                image: rohitchorpa32/django-docker:latest
                 container_name: djangoapp
                 restart: always
                 expose:
@@ -12,7 +13,8 @@ services:
                         - db
                         - redis
         djangosocket:
-                build: ./djangoapp
+                # build: ./djangoapp
+                image: rohitchorpa32/django-docker:latest
                 container_name: djangosocket
                 restart: always
                 expose:
@@ -21,9 +23,11 @@ services:
                 depends_on:
                         - db
                         - redis
+                        - djangoapp
 
         nginx:
-                build: ./nginx
+                image: rohitchorpa32/nginx-docker:latest
+                # build: ./nginx
                 container_name: nginx
                 restart: always
                 ports:
@@ -32,7 +36,8 @@ services:
                         - djangoapp
                         - djangosocket
         db:
-                build: ./postgresql
+                # build: ./postgresql
+                image: rohitchorpa32/postgres-docker:latest
                 container_name: postgres
                 restart: always
 
